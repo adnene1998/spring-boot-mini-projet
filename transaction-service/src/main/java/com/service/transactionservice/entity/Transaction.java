@@ -19,7 +19,6 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @NotBlank(message = "Transaction reference is required")
     @Column(unique = true, nullable = false)
     private String transactionRef;
     
