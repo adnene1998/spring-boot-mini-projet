@@ -54,7 +54,7 @@ public class TransactionService {
 
     public Transaction processDeposit(String accountNumber, Double amount, String description) {
         Transaction transaction = new Transaction();
-        transaction.setFromAccount(accountNumber);
+        transaction.setToAccount(accountNumber);
         transaction.setAmount(amount);
         transaction.setTransactionType(Transaction.TransactionType.DEPOSIT);
         transaction.setDescription(description);

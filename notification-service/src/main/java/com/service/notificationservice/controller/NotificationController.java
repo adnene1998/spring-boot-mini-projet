@@ -1,5 +1,7 @@
 package com.service.notificationservice.controller;
 
+import com.service.notificationservice.dto.AlertNotificationRequest;
+import com.service.notificationservice.dto.TransactionNotificationRequest;
 import com.service.notificationservice.entity.Notification;
 import com.service.notificationservice.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,27 +58,30 @@ public class NotificationController {
     }
 
     @PostMapping("/transaction")
-    public ResponseEntity<Notification> sendTransactionNotification(@RequestBody Map<String, Object> request) {
-        Long customerId = Long.valueOf(request.get("customerId").toString());
-        String transactionRef = (String) request.get("transactionRef");
-        String message = (String) request.get("message");
-        Notification notification = notificationService.sendTransactionNotification(customerId, transactionRef, message);
+    public ResponseEntity<Notification> sendTransactionNotification(@Valid @RequestBody TransactionNotificationRequest request) {
+        Notification notification = notificationService.sendTransactionNotification(
+                request.getCustomerId(), 
+                request.getTransactionRef(), 
+                request.getMessage()
+        );
         return new ResponseEntity<>(notification, HttpStatus.CREATED);
     }
 
     @PostMapping("/insufficient-balance")
-    public ResponseEntity<Notification> sendInsufficientBalanceAlert(@RequestBody Map<String, Object> request) {
-        Long customerId = Long.valueOf(request.get("customerId").toString());
-        String message = (String) request.get("message");
-        Notification notification = notificationService.sendInsufficientBalanceAlert(customerId, message);
+    public ResponseEntity<Notification> sendInsufficientBalanceAlert(@Valid @RequestBody AlertNotificationRequest request) {
+        Notification notification = notificationService.sendInsufficientBalanceAlert(
+                request.getCustomerId(), 
+                request.getMessage()
+        );
         return new ResponseEntity<>(notification, HttpStatus.CREATED);
     }
 
     @PostMapping("/login-alert")
-    public ResponseEntity<Notification> sendLoginAlert(@RequestBody Map<String, Object> request) {
-        Long customerId = Long.valueOf(request.get("customerId").toString());
-        String message = (String) request.get("message");
-        Notification notification = notificationService.sendLoginAlert(customerId, message);
+    public ResponseEntity<Notification> sendLoginAlert(@Valid @RequestBody AlertNotificationRequest request) {
+        Notification notification = notificationService.sendLoginAlert(
+                request.getCustomerId(), 
+                request.getMessage()
+        );
         return new ResponseEntity<>(notification, HttpStatus.CREATED);
     }
 }

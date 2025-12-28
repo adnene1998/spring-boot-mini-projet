@@ -102,7 +102,7 @@ services:
       timeout: 10s
       retries: 5
 
-  # Customer Service
+  # Customer Service (client-service directory)
   customer-service:
     build:
       context: ./client-service

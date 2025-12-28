@@ -1,5 +1,8 @@
 package com.service.transactionservice.controller;
 
+import com.service.transactionservice.dto.DepositRequest;
+import com.service.transactionservice.dto.TransferRequest;
+import com.service.transactionservice.dto.WithdrawalRequest;
 import com.service.transactionservice.entity.Transaction;
 import com.service.transactionservice.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,30 +77,33 @@ public class TransactionController {
     }
 
     @PostMapping("/deposit")
-    public ResponseEntity<Transaction> processDeposit(@RequestBody Map<String, Object> depositRequest) {
-        String accountNumber = (String) depositRequest.get("accountNumber");
-        Double amount = Double.valueOf(depositRequest.get("amount").toString());
-        String description = (String) depositRequest.get("description");
-        Transaction transaction = transactionService.processDeposit(accountNumber, amount, description);
+    public ResponseEntity<Transaction> processDeposit(@Valid @RequestBody DepositRequest depositRequest) {
+        Transaction transaction = transactionService.processDeposit(
+                depositRequest.getAccountNumber(), 
+                depositRequest.getAmount(), 
+                depositRequest.getDescription()
+        );
         return new ResponseEntity<>(transaction, HttpStatus.CREATED);
     }
 
     @PostMapping("/withdrawal")
-    public ResponseEntity<Transaction> processWithdrawal(@RequestBody Map<String, Object> withdrawalRequest) {
-        String accountNumber = (String) withdrawalRequest.get("accountNumber");
-        Double amount = Double.valueOf(withdrawalRequest.get("amount").toString());
-        String description = (String) withdrawalRequest.get("description");
-        Transaction transaction = transactionService.processWithdrawal(accountNumber, amount, description);
+    public ResponseEntity<Transaction> processWithdrawal(@Valid @RequestBody WithdrawalRequest withdrawalRequest) {
+        Transaction transaction = transactionService.processWithdrawal(
+                withdrawalRequest.getAccountNumber(), 
+                withdrawalRequest.getAmount(), 
+                withdrawalRequest.getDescription()
+        );
         return new ResponseEntity<>(transaction, HttpStatus.CREATED);
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<Transaction> processTransfer(@RequestBody Map<String, Object> transferRequest) {
-        String fromAccount = (String) transferRequest.get("fromAccount");
-        String toAccount = (String) transferRequest.get("toAccount");
-        Double amount = Double.valueOf(transferRequest.get("amount").toString());
-        String description = (String) transferRequest.get("description");
-        Transaction transaction = transactionService.processTransfer(fromAccount, toAccount, amount, description);
+    public ResponseEntity<Transaction> processTransfer(@Valid @RequestBody TransferRequest transferRequest) {
+        Transaction transaction = transactionService.processTransfer(
+                transferRequest.getFromAccount(), 
+                transferRequest.getToAccount(), 
+                transferRequest.getAmount(), 
+                transferRequest.getDescription()
+        );
         return new ResponseEntity<>(transaction, HttpStatus.CREATED);
     }
 }
