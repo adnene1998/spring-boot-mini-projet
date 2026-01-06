@@ -12,4 +12,6 @@ public interface IServicePatient {
 
     public List<Patient> getAllPatient();
     public Optional<Patient> getPatientById(int id);
+    public Patient updatePatient(int id, Patient patient);
+    public void deletePatient(int id);
 }
